@@ -1,5 +1,4 @@
 *.sqlite3
-tests/
 venv/
 *pycache*
 *.idea

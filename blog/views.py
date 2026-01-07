@@ -1,14 +1,10 @@
-from django.http import HttpRequest, HttpResponse
-from django.urls import reverse
 from django.views import generic
-from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.shortcuts import redirect
+from django.db.models import Count
 
 from blog.forms import CommentForm
 from blog.models import Post
-
-
-def index(request: HttpRequest) -> HttpResponse:
-    return render(request, "blog/index.html")
 
 
 class IndexView(generic.ListView):
@@ -16,6 +12,9 @@ class IndexView(generic.ListView):
     context_object_name = "posts"
     template_name = "blog/index.html"
     paginate_by = 5
+
+    def get_queryset(self):
+        return Post.objects.annotate(comments_count=Count("comments"))
 
 
 class PostView(generic.edit.FormMixin, generic.DetailView):
