@@ -23,23 +23,23 @@ class PostView(generic.edit.FormMixin, generic.DetailView):
     form_class = CommentForm
 
     def get_success_url(self):
-        return reverse("blog:post-detail", kwargs={"pk": self.object.pk})  # type: ignore
+        return reverse("blog:post-detail", kwargs={"pk": self.object.pk})
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["comments_count"] = self.object.comments.count()  # type: ignore
+        context["comments_count"] = self.object.comments.count()
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
 
-        if   not request.user.is_authenticated:
+        if not request.user.is_authenticated:
             form.add_error(None, "You must be logged in to comment!")
             return self.form_invalid(form)
 
         if form.is_valid():
-            comment = form.save(commit=False)  # type: ignore
+            comment = form.save(commit=False)
             comment.post = self.object
             comment.user = request.user
             comment.save()

@@ -1,12 +1,10 @@
-from tabnanny import verbose
-from turtle import title
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.urls import reverse
 
 
 class User(AbstractUser):
-    
+
     class Meta:
         verbose_name = "user"
         verbose_name_plural = "users"
@@ -16,7 +14,6 @@ class Post(models.Model):
     owner = models.ForeignKey(
         to=User,
         on_delete=models.CASCADE,
-        # name="user",
         related_name="posts"
     )
     title = models.CharField(max_length=255)
@@ -31,7 +28,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
-    
+
     def get_absolute_url(self):
         return reverse("blog:post-detail", kwargs={"pk": self.pk})
 
